@@ -1,0 +1,104 @@
+add_rules("mode.debug", "mode.release")
+add_requires("opencv", {configs = {ipp=true, openmp=true, dynamic_parallel=true}})
+add_requires("nlohmann_json", "crow", "libcurl", "boost", "onnxruntime")
+
+-- target("datasave") --- 输出动态库的名字
+--     set_kind("shared") --- 说明输出的是动态库
+--     add_files("lib/data_save.cpp") --- 输出动态库的源文件
+--     add_includedirs("include")
+--     add_packages("opencv", "nlohmann_json", "crow", "libcurl", "boost")
+--     add_rules("utils.symbols.export_all", {export_classes = true})
+
+
+-- set_languages("c++17")
+target("cpp")
+    set_kind("binary")
+    -- add_files("lib/data_save.dll")
+    
+    add_files("src/*.cpp")
+    -- add_files("lib/*.cpp")
+    
+    add_includedirs("include")
+    add_links("datasave") --- 添加链接库foo
+    add_linkdirs("build/windows/x64/release") --- 添加链接库所在目录
+
+    -- add_deps("datasave")
+    -- add_linkdirs("build/windows/x64/release")
+    -- add_links("datasave")
+    -- add_links("build/windows/x64/release/data_save")
+    
+    
+    -- add_rpathdirs("@loader_path/build/windows/x64/release")
+    -- add_linkdirs("D:/xmake/packages/o/onnxruntime/1.11.1/a9d1b968fbca4c5db20b01be3884e68a/lib")
+    add_packages("opencv", "nlohmann_json", "crow", "libcurl", "boost", "onnxruntime")
+    -- set_languages("c++17")
+
+--
+-- If you want to known more usage about xmake, please see https://xmake.io
+--
+-- ## FAQ
+--
+-- You can enter the project directory firstly before building project.
+--
+--   $ cd projectdir
+--
+-- 1. How to build project?
+--
+--   $ xmake
+--
+-- 2. How to configure project?
+--
+--   $ xmake f -p [macosx|linux|iphoneos ..] -a [x86_64|i386|arm64 ..] -m [debug|release]
+--
+-- 3. Where is the build output directory?
+--
+--   The default output directory is `./build` and you can configure the output directory.
+--
+--   $ xmake f -o outputdir
+--   $ xmake
+--
+-- 4. How to run and debug target after building project?
+--
+--   $ xmake run [targetname]
+--   $ xmake run -d [targetname]
+--
+-- 5. How to install target to the system directory or other output directory?
+--
+--   $ xmake install
+--   $ xmake install -o installdir
+--
+-- 6. Add some frequently-used compilation flags in xmake.lua
+--
+-- @code
+--    -- add debug and release modes
+--    add_rules("mode.debug", "mode.release")
+--
+--    -- add macro definition
+--    add_defines("NDEBUG", "_GNU_SOURCE=1")
+--
+--    -- set warning all as error
+--    set_warnings("all", "error")
+--
+--    -- set language: c99, c++11
+--    set_languages("c99", "c++11")
+--
+--    -- set optimization: none, faster, fastest, smallest
+--    set_optimize("fastest")
+--
+--    -- add include search directories
+--    add_includedirs("/usr/include", "/usr/local/include")
+--
+--    -- add link libraries and search directories
+--    add_links("tbox")
+--    add_linkdirs("/usr/local/lib", "/usr/lib")
+--
+--    -- add system link libraries
+--    add_syslinks("z", "pthread")
+--
+--    -- add compilation and link flags
+--    add_cxflags("-stdnolib", "-fno-strict-aliasing")
+--    add_ldflags("-L/usr/local/lib", "-lpthread", {force = true})
+--
+-- @endcode
+--
+
